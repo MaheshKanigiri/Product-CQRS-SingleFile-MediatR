@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
 using Product_CQRS_SingleFile_MediatR.Interface;
 using Product_CQRS_SingleFile_MediatR.Models;
@@ -24,6 +25,11 @@ builder.Services.AddDbContext<ProductdbContext>(options =>
         "DefaultConnection"));
 });
 
+//Add Service for Logging
+builder.Services.AddHttpLogging(logging =>
+{
+    logging.LoggingFields = HttpLoggingFields.All;
+});
 
 
 var app = builder.Build();
@@ -33,6 +39,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseHttpLogging();
 }
 
 app.UseHttpsRedirection();
